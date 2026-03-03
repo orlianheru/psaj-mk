@@ -60,7 +60,6 @@
             <a href="#story" class="hover:opacity-70 transition">The Story</a>
             <a href="#breads" class="hover:opacity-70 transition">Our Breads</a>
             <a href="#" class="hover:opacity-70 transition">Contact</a>
-            <a href="/login" class="hover:opacity-70 transition">Admin</a>
         </nav>
     </header>
 
@@ -126,31 +125,46 @@
     </section>
 
     <section id="breads" class="px-8 md:px-20 py-24 bg-dark-brown">
-        <h2 class="font-caveat text-6xl text-center mb-16 text-white">Our Breads</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-            @php
-                $products = [
-                    ['img' => 'roti (1).png', 'name' => 'Sourdough Original'],
-                    ['img' => 'pandan.png', 'name' => 'Sourdough Pandan'],
-                    ['img' => 'keju.png', 'name' => 'Sourdough Keju'],
-                    ['img' => 'coklat.png', 'name' => 'Sourdough Coklat'],
-                ];
-            @endphp
-            @foreach($products as $product)
-                <div class="flex justify-center group">
-                    <div
-                        class="bg-[#D2B595] rounded-3xl p-6 w-full max-w-[280px] h-[380px] flex flex-col items-center justify-between shadow-lg transform transition hover:-translate-y-2">
-                        <div class="flex-grow flex items-center justify-center">
-                            <img src="{{ asset('assets/img/' . $product['img']) }}" alt="{{ $product['name'] }}"
-                                class="w-56 h-56 object-contain drop-shadow-md">
-                        </div>
-                        <h3 class="font-caveat text-dark-brown text-2xl mt-2 tracking-wide">{{ $product['name'] }}</h3>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    </section>
+    <h2 class="font-caveat text-6xl text-center mb-16 text-white">Our Breads</h2>
 
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+
+        @forelse($produks as $product)
+            <div class="flex justify-center group">
+                <div
+                    class="bg-[#D2B595] rounded-3xl p-6 w-full max-w-[280px] h-[380px] flex flex-col items-center justify-between shadow-lg transform transition hover:-translate-y-2">
+
+                    {{-- Gambar --}}
+                    <div class="flex-grow flex items-center justify-center">
+                        @if($product->gambar)
+    <img
+        src="{{ asset('storage/' . $product->gambar) }}"
+        alt="{{ $product->nama }}"
+        class="w-56 h-56 object-contain drop-shadow-md"
+    />
+@endif
+                    </div>
+
+                    {{-- Nama --}}
+                    <h3 class="font-caveat text-dark-brown text-2xl mt-2 tracking-wide">
+                        {{ $product->nama }}
+                    </h3>
+
+                    {{-- Harga --}}
+                    <p class="text-dark-brown font-semibold">
+                        Rp {{ number_format($product->harga, 0, ',', '.') }}
+                    </p>
+
+                </div>
+            </div>
+        @empty
+            <p class="text-white text-center col-span-4">
+                Belum ada produk.
+            </p>
+        @endforelse
+
+    </div>
+</section>
     <footer class="bg-dark-brown px-6 py-6 md:px-14 md:py-8">
         <div
             class="border-2 border-dashed border-white/60 rounded-xl p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-8">

@@ -1,19 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Produk;
 
 Route::get('/', function () {
-    return view('welcome');
+    $produks = Produk::latest()->get();
+    return view('home', compact('produks'));
 });
 
-Route::get('/login', function () {
-    return view('login');
-});
-
-Route::post('/admin', function () {
-    return view('admin');
-});
-
-Route::get('/admin', function () {
-    return view('admin');
-});
