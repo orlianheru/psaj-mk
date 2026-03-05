@@ -7,4 +7,3 @@ Route::get('/', function () {
     $produks = Produk::latest()->get();
     return view('home', compact('produks'));
 });
-

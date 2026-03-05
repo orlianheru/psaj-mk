@@ -48,7 +48,7 @@
 
 <body class="bg-cream">
 
-    <header class="bg-cream px-8 md:px-14 py-4 flex justify-between items-center relative z-50 shadow-sm">
+    <header class="sticky top-0 bg-cream px-8 md:px-14 py-4 flex justify-between items-center relative z-50 shadow-sm">
         <div class="relative">
             <img src="{{ asset('assets/img/logo.png') }}" alt="DiaRi Logo"
                 class="h-24 md:h-32 absolute -top-8 left-0 max-w-none transform transition hover:scale-105">
@@ -129,35 +129,47 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
 
-        @forelse($produks as $product)
-            <div class="flex justify-center group">
-                <div
-                    class="bg-[#D2B595] rounded-3xl p-6 w-full max-w-[280px] h-[380px] flex flex-col items-center justify-between shadow-lg transform transition hover:-translate-y-2">
+    @forelse($produks as $product)
 
-                    {{-- Gambar --}}
-                    <div class="flex-grow flex items-center justify-center">
-                        @if($product->gambar)
-    <img
-        src="{{ asset('storage/' . $product->gambar) }}"
-        alt="{{ $product->nama }}"
-        class="w-56 h-56 object-contain drop-shadow-md"
-    />
-@endif
-                    </div>
+        @php
+            $nama = strtolower($product->nama);
+        @endphp
 
-                    {{-- Nama --}}
-                    <h3 class="font-caveat text-dark-brown text-2xl mt-2 tracking-wide">
-                        {{ $product->nama }}
-                    </h3>
+                            <div
+                                class="bg-[#D2B595] rounded-3xl p-6 w-full max-w-[280px] h-[380px] flex flex-col items-center justify-between shadow-lg transform transition hover:-translate-y-2">
 
-                    {{-- Harga --}}
-                    <p class="text-dark-brown font-semibold">
-                        Rp {{ number_format($product->harga, 0, ',', '.') }}
-                    </p>
+                                {{-- Gambar --}}
+                                <div class="flex-grow flex items-center justify-center">
+                                    @if($product->gambar)
+                                        <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama }}"
+                                            class="w-56 h-56 object-contain drop-shadow-md" />
+                                    @endif
+                                </div>
 
-                </div>
-            </div>
-        @empty
+                                {{-- Nama --}}
+                                <h3 class="font-caveat text-dark-brown text-2xl mt-2 tracking-wide">
+                                    {{ $product->nama }}
+                                </h3>
+
+                                {{-- Harga --}}
+                                <p class="text-dark-brown font-semibold">
+                                    Rp {{ number_format($product->harga, 0, ',', '.') }}
+                                </p>
+
+                            </div>
+
+                            @if(
+                                            $nama == 'sourdough original' ||
+                                            $nama == 'sourdough keju' ||
+                                            $nama == 'sourdough coklat' ||
+                                            $nama == 'sourdough pandan'
+                                        )
+                                </a>
+                            @else
+                        </div>
+                    @endif
+
+    @empty
             <p class="text-white text-center col-span-4">
                 Belum ada produk.
             </p>
@@ -167,13 +179,46 @@
 </section>
     <footer class="bg-dark-brown px-6 py-6 md:px-14 md:py-8">
         <div
-            class="border-2 border-dashed border-white/60 rounded-xl p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
-            <div class="flex flex-col space-y-2">
-                <h4 class="font-caveat text-white text-3xl mb-4">Product</h4>
-                <a href="#home" class="text-white hover:text-tan text-sm font-medium transition">Home</a>
-                <a href="#story" class="text-white hover:text-tan text-sm font-medium transition">The Story</a>
-                <a href="#breads" class="text-white hover:text-tan text-sm font-medium transition">Our Breads</a>
-                <a href="#" class="text-white hover:text-tan text-sm font-medium transition">Contact</a>
+            class="border-2 border-dashed border-white/60 rounded-xl p-6 md:p-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Product Column -->
+                <div class="flex flex-col space-y-2">
+                    <h4 class="font-caveat text-white text-3xl mb-4">Product</h4>
+                    <a href="{{ url('/original') }}" class="text-white hover:text-amber-100 text-sm font-medium transition">Sourdough Original</a>
+                    <a href="{{ url('/pandan') }}" class="text-white hover:text-amber-100 text-sm font-medium transition">Sourdough Pandan</a>
+                    <a href="{{ url('/keju') }}" class="text-white hover:text-amber-100 text-sm font-medium transition">Sourdough Cheese</a>
+                    <a href="{{ url('/coklat') }}" class="text-white hover:text-amber-100 text-sm font-medium transition">Sourdough Chocolate</a>
+                </div>
+
+                <!-- Site Column -->
+                <div class="flex flex-col space-y-2">
+                    <h4 class="font-caveat text-white text-3xl mb-4">Site</h4>
+                    <a href="#home" class="text-white hover:text-amber-100 text-sm font-medium transition">Home</a>
+                    <a href="#story" class="text-white hover:text-amber-100 text-sm font-medium transition">The Story</a>
+                    <a href="#breads" class="text-white hover:text-amber-100 text-sm font-medium transition">Our Breads</a>
+                    <a href="#" class="text-white hover:text-amber-100 text-sm font-medium transition">Contact</a>
+                </div>
+
+                <!-- Contact Detail Column -->
+                <div class="flex flex-col space-y-2">
+                    <h4 class="font-caveat text-white text-3xl mb-4">Contact Detail</h4>
+                    <p class="text-white text-sm font-medium">Jl. Brobahan no. 9</p>
+                    <p class="text-white text-sm font-medium">Purwokerto timur</p>
+                    <a href="https://wa.me/6285642289659" target="_blank"
+                        class="text-white hover:text-amber-100 text-sm font-medium transition">
+                        Call +62 856-4228-9659
+                    </a>
+                </div>
+
+                <!-- Instagram Icon -->
+                <div class="flex flex-col items-start md:items-end justify-end">
+                    <a href="https://www.instagram.com/dinah_kristanti?igsh=cDVlajV4Y3BkYWVu" target="_blank"
+                        class="text-amber-200 hover:text-amber-100 transition">
+                        <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.266.069 1.646.069 4.85 0 3.204-.012 3.584-.07 4.85-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1112.324 0 6.162 6.162 0 01-12.324 0zM12 16a4 4 0 100-8 4 4 0 000 8zm4.965-10.322a1.44 1.44 0 110-2.881 1.44 1.44 0 010 2.881z"/>
+                        </svg>
+                    </a>
+                </div>
             </div>
         </div>
     </footer>
