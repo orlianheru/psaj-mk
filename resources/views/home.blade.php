@@ -15,6 +15,10 @@
         rel="stylesheet">
 
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
         .font-caveat {
             font-family: 'Caveat Brush', cursive;
         }
@@ -43,6 +47,40 @@
             mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 0) 100%);
             -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 0) 100%);
         }
+
+        /* Modal Animation */
+        @keyframes backdropFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes modalScaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.3);
+            animation: backdropFadeIn 0.3s ease-out;
+        }
+
+        .modal-content {
+            animation: modalScaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 
@@ -59,7 +97,7 @@
             <a href="#home" class="hover:opacity-70 transition">Home</a>
             <a href="#story" class="hover:opacity-70 transition">The Story</a>
             <a href="#breads" class="hover:opacity-70 transition">Our Breads</a>
-            <a href="#" class="hover:opacity-70 transition">Contact</a>
+            <a href="https://wa.me/6285642289659" target="_blank" class="hover:opacity-70 transition">Contact</a>
         </nav>
     </header>
 
@@ -75,12 +113,8 @@
                     pilihan, proses alami, dan resep keluarga yang telah menemani banyak cerita di rumah.</p>
             </div>
             <div class="flex gap-4 pt-8">
-                <button
-                    class="bg-dark-brown text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition shadow-md">View
-                    Menu</button>
-                <button
-                    class="bg-dark-brown text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition shadow-md">Order
-                    Now</button>
+                <a href="#breads" class="bg-dark-brown text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition shadow-md">View Menu</a>
+                <a href="https://wa.me/6285642289659" target="_blank" class="bg-dark-brown text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition shadow-md">Order Now</a>
             </div>
         </div>
         <div class="flex-1 h-full w-full md:w-auto flex justify-end relative">
@@ -135,39 +169,151 @@
             $nama = strtolower($product->nama);
         @endphp
 
-                            <div
-                                class="bg-[#D2B595] rounded-3xl p-6 w-full max-w-[280px] h-[380px] flex flex-col items-center justify-between shadow-lg transform transition hover:-translate-y-2">
+        @if($nama == 'sourdough original')
+            <div
+                class="bg-[#D2B595] rounded-3xl p-6 w-full max-w-[280px] h-[380px] flex flex-col items-center justify-between shadow-lg transform transition hover:-translate-y-2 cursor-pointer"
+                onclick="openOriginalModal()">
 
-                                {{-- Gambar --}}
-                                <div class="flex-grow flex items-center justify-center">
-                                    @if($product->gambar)
-                                        <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama }}"
-                                            class="w-56 h-56 object-contain drop-shadow-md" />
-                                    @endif
-                                </div>
-
-                                {{-- Nama --}}
-                                <h3 class="font-caveat text-dark-brown text-2xl mt-2 tracking-wide">
-                                    {{ $product->nama }}
-                                </h3>
-
-                                {{-- Harga --}}
-                                <p class="text-dark-brown font-semibold">
-                                    Rp {{ number_format($product->harga, 0, ',', '.') }}
-                                </p>
-
-                            </div>
-
-                            @if(
-                                            $nama == 'sourdough original' ||
-                                            $nama == 'sourdough keju' ||
-                                            $nama == 'sourdough coklat' ||
-                                            $nama == 'sourdough pandan'
-                                        )
-                                </a>
-                            @else
-                        </div>
+                {{-- Gambar --}}
+                <div class="flex-grow flex items-center justify-center">
+                    @if($product->gambar)
+                        <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama }}"
+                            class="w-56 h-56 object-contain drop-shadow-md" />
                     @endif
+                </div>
+
+                {{-- Nama --}}
+                <h3 class="font-caveat text-dark-brown text-2xl mt-2 tracking-wide">
+                    {{ $product->nama }}
+                </h3>
+
+                {{-- Harga --}}
+                <p class="text-dark-brown font-semibold">
+                    Rp {{ number_format($product->harga, 0, ',', '.') }}
+                </p>
+
+                {{-- Stok --}}
+                <p class="text-dark-brown text-sm">
+                    Stock = {{ $product->stok }}
+                </p>
+
+            </div>
+        @elseif($nama == 'sourdough pandan')
+            <div
+                class="bg-[#D2B595] rounded-3xl p-6 w-full max-w-[280px] h-[380px] flex flex-col items-center justify-between shadow-lg transform transition hover:-translate-y-2 cursor-pointer"
+                onclick="openPandanModal()">
+
+                {{-- Gambar --}}
+                <div class="flex-grow flex items-center justify-center">
+                    @if($product->gambar)
+                        <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama }}"
+                            class="w-56 h-56 object-contain drop-shadow-md" />
+                    @endif
+                </div>
+
+                {{-- Nama --}}
+                <h3 class="font-caveat text-dark-brown text-2xl mt-2 tracking-wide">
+                    {{ $product->nama }}
+                </h3>
+
+                {{-- Harga --}}
+                <p class="text-dark-brown font-semibold">
+                    Rp {{ number_format($product->harga, 0, ',', '.') }}
+                </p>
+
+                {{-- Stok --}}
+                <p class="text-dark-brown text-sm">
+                    Stock = {{ $product->stok }}
+                </p>
+
+            </div>
+        @elseif($nama == 'sourdough keju')
+            <div
+                class="bg-[#D2B595] rounded-3xl p-6 w-full max-w-[280px] h-[380px] flex flex-col items-center justify-between shadow-lg transform transition hover:-translate-y-2 cursor-pointer"
+                onclick="openKejuModal()">
+
+                {{-- Gambar --}}
+                <div class="flex-grow flex items-center justify-center">
+                    @if($product->gambar)
+                        <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama }}"
+                            class="w-56 h-56 object-contain drop-shadow-md" />
+                    @endif
+                </div>
+
+                {{-- Nama --}}
+                <h3 class="font-caveat text-dark-brown text-2xl mt-2 tracking-wide">
+                    {{ $product->nama }}
+                </h3>
+
+                {{-- Harga --}}
+                <p class="text-dark-brown font-semibold">
+                    Rp {{ number_format($product->harga, 0, ',', '.') }}
+                </p>
+
+                {{-- Stok --}}
+                <p class="text-dark-brown text-sm">
+                    Stock = {{ $product->stok }}
+                </p>
+
+            </div>
+        @elseif($nama == 'sourdough coklat')
+            <div
+                class="bg-[#D2B595] rounded-3xl p-6 w-full max-w-[280px] h-[380px] flex flex-col items-center justify-between shadow-lg transform transition hover:-translate-y-2 cursor-pointer"
+                onclick="openColatModal()">
+
+                {{-- Gambar --}}
+                <div class="flex-grow flex items-center justify-center">
+                    @if($product->gambar)
+                        <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama }}"
+                            class="w-56 h-56 object-contain drop-shadow-md" />
+                    @endif
+                </div>
+
+                {{-- Nama --}}
+                <h3 class="font-caveat text-dark-brown text-2xl mt-2 tracking-wide">
+                    {{ $product->nama }}
+                </h3>
+
+                {{-- Harga --}}
+                <p class="text-dark-brown font-semibold">
+                    Rp {{ number_format($product->harga, 0, ',', '.') }}
+                </p>
+
+                {{-- Stok --}}
+                <p class="text-dark-brown text-sm">
+                    Stock = {{ $product->stok }}
+                </p>
+
+            </div>
+        @else
+            <div
+                class="bg-[#D2B595] rounded-3xl p-6 w-full max-w-[280px] h-[380px] flex flex-col items-center justify-between shadow-lg transform transition hover:-translate-y-2">
+
+                {{-- Gambar --}}
+                <div class="flex-grow flex items-center justify-center">
+                    @if($product->gambar)
+                        <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama }}"
+                            class="w-56 h-56 object-contain drop-shadow-md" />
+                    @endif
+                </div>
+
+                {{-- Nama --}}
+                <h3 class="font-caveat text-dark-brown text-2xl mt-2 tracking-wide">
+                    {{ $product->nama }}
+                </h3>
+
+                {{-- Harga --}}
+                <p class="text-dark-brown font-semibold">
+                    Rp {{ number_format($product->harga, 0, ',', '.') }}
+                </p>
+
+                {{-- Stok --}}
+                <p class="text-dark-brown text-sm">
+                    Stock = {{ $product->stok }}
+                </p>
+
+            </div>
+        @endif
 
     @empty
             <p class="text-white text-center col-span-4">
@@ -177,6 +323,202 @@
 
     </div>
 </section>
+
+    <!-- Modal Sourdough Original -->
+    <div id="originalModal" class="hidden fixed inset-0 modal-backdrop flex items-center justify-center z-50">
+        <div class="modal-content bg-[#B5907A] rounded-3xl w-full max-w-3xl mx-4 relative flex flex-col md:flex-row h-[600px] overflow-hidden">
+            <!-- Close Button -->
+            <button onclick="closeOriginalModal()" class="absolute top-6 right-6 text-white text-3xl font-bold hover:opacity-70 transition z-10">
+                ×
+            </button>
+
+            <!-- Left Content -->
+            <div class="flex-1 flex flex-col justify-center p-8 md:p-10 text-white">
+                <h2 class="font-serif-title text-4xl md:text-5xl mb-2">Sourdough Original</h2>
+                <p class="text-sm md:text-base font-light mb-6 opacity-90">Cita rasa klasik dengan asam yang khus</p>
+
+                <div class="space-y-4 text-sm md:text-base font-light opacity-90 leading-relaxed mb-8">
+                    <p>Sourdough Original adalah roti yang dibuat dengan fermentasi alami menggunakan starter tanpa ragi instan. Roti ini memiliki rasa asam khas, tekstur berongga dan lembut di dalam, serta kulit luar yang renyah. 🥖</p>
+                </div>
+
+                <a href="https://wa.me/6285642289659" target="_blank" class="bg-dark-brown text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition shadow-md w-fit">
+                    Order Now
+                </a>
+            </div>
+
+            <!-- Right Content - Image (Full Height) -->
+            <div class="flex-1 h-full flex items-stretch justify-stretch overflow-hidden">
+                <img src="{{ asset('assets/img/OOO.png') }}" alt="Sourdough Original" class="w-full h-full object-cover">
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sourdough Pandan -->
+    <div id="pandanModal" class="hidden fixed inset-0 modal-backdrop flex items-center justify-center z-50">
+        <div class="modal-content bg-[#B5907A] rounded-3xl w-full max-w-3xl mx-4 relative flex flex-col md:flex-row h-[600px] overflow-hidden">
+            <!-- Close Button -->
+            <button onclick="closePandanModal()" class="absolute top-6 right-6 text-white text-3xl font-bold hover:opacity-70 transition z-10">
+                ×
+            </button>
+
+            <!-- Left Content - Image (Full Height) -->
+            <div class="flex-1 h-full flex items-stretch justify-stretch overflow-hidden">
+                <img src="{{ asset('assets/img/backpandan.png') }}" alt="Sourdough Pandan" class="w-full h-full object-cover">
+            </div>
+
+            <!-- Right Content -->
+            <div class="flex-1 flex flex-col justify-center p-8 md:p-10 text-white">
+                <h2 class="font-serif-title text-4xl md:text-5xl mb-2">Sourdough Pandan</h2>
+                <p class="text-sm md:text-base font-light mb-6 opacity-90">Perpaduan harum pandan dan asam yang lembut</p>
+
+                <div class="space-y-4 text-sm md:text-base font-light opacity-90 leading-relaxed mb-8">
+                    <p>Sourdough Pandan adalah roti sourdough dengan tambahan aroma dan rasa pandan. Dibuat dengan fermentasi alami menggunakan starter. Rasanya asekelik asam dengan sentuhan manis pandan yang lembut, tekstur berongga di dalam, serta kulit luar yang renyah. 🌿🥖</p>
+                </div>
+
+                <a href="https://wa.me/6285642289659" target="_blank" class="bg-dark-brown text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition shadow-md w-fit">
+                    Order Now
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sourdough Keju -->
+    <div id="kejuModal" class="hidden fixed inset-0 modal-backdrop flex items-center justify-center z-50">
+        <div class="modal-content bg-[#B5907A] rounded-3xl w-full max-w-3xl mx-4 relative flex flex-col md:flex-row h-[600px] overflow-hidden">
+            <!-- Close Button -->
+            <button onclick="closeKejuModal()" class="absolute top-6 right-6 text-white text-3xl font-bold hover:opacity-70 transition z-10">
+                ×
+            </button>
+
+            <!-- Left Content - Image (Full Height) -->
+            <div class="flex-1 h-full flex items-stretch justify-stretch overflow-hidden">
+                <img src="{{ asset('assets/img/backkeju.png') }}" alt="Sourdough Keju" class="w-full h-full object-cover">
+            </div>
+
+            <!-- Right Content -->
+            <div class="flex-1 flex flex-col justify-center p-8 md:p-10 text-white">
+                <h2 class="font-serif-title text-4xl md:text-5xl mb-2">Sourdough Cheese</h2>
+                <p class="text-sm md:text-base font-light mb-6 opacity-90">Perpaduan gurih dan asam yang seimbang</p>
+
+                <div class="space-y-4 text-sm md:text-base font-light opacity-90 leading-relaxed mb-8">
+                    <p>Sourdough Cheese adalah roti sourdough yang dibuat dengan fermentasi alami dan ditambahkan dengan keju. Rasanya gurih, creamy, dan sedikit asam nan seimbang dengan rasa asam khus sourdough. Teksturnya berongga di dalam dengan kulit luar yang renyah. 🧀🥖</p>
+                </div>
+
+                <a href="https://wa.me/6285642289659" target="_blank" class="bg-dark-brown text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition shadow-md w-fit">
+                    Order Now
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sourdough Coklat -->
+    <div id="colatModal" class="hidden fixed inset-0 modal-backdrop flex items-center justify-center z-50">
+        <div class="modal-content bg-[#B5907A] rounded-3xl w-full max-w-3xl mx-4 relative flex flex-col md:flex-row h-[600px] overflow-hidden">
+            <!-- Close Button -->
+            <button onclick="closeColatModal()" class="absolute top-6 right-6 text-white text-3xl font-bold hover:opacity-70 transition z-10">
+                ×
+            </button>
+
+            <!-- Left Content -->
+            <div class="flex-1 flex flex-col justify-center p-8 md:p-10 text-white">
+                <h2 class="font-serif-title text-4xl md:text-5xl mb-2">Sourdough Chocolate</h2>
+                <p class="text-sm md:text-base font-light mb-6 opacity-90">Manis legit dengan sentuhan asam khas sourdough</p>
+
+                <div class="space-y-4 text-sm md:text-base font-light opacity-90 leading-relaxed mb-8">
+                    <p>Sourdough Chocolate adalah roti sourdough dengan tambahan chocolate chips atau potongan cokelat di dalam adenya. Dibuat dengan fermentasi alami, roti ini memiliki rasa asam lembut yang berpadu dengan manis cokelat, tekstur berongga, dan kulit luar yang renyah. 🍫🥖</p>
+                </div>
+
+                <a href="https://wa.me/6285642289659" target="_blank" class="bg-dark-brown text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition shadow-md w-fit">
+                    Order Now
+                </a>
+            </div>
+
+            <!-- Right Content - Image (Full Height) -->
+            <div class="flex-1 h-full flex items-stretch justify-stretch overflow-hidden">
+                <img src="{{ asset('assets/img/CCC.png') }}" alt="Sourdough Chocolate" class="w-full h-full object-cover">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Original Modal
+        function openOriginalModal() {
+            document.getElementById('originalModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeOriginalModal() {
+            document.getElementById('originalModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('originalModal')?.addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeOriginalModal();
+            }
+        });
+
+        // Pandan Modal
+        function openPandanModal() {
+            document.getElementById('pandanModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePandanModal() {
+            document.getElementById('pandanModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('pandanModal')?.addEventListener('click', function(event) {
+            if (event.target === this) {
+                closePandanModal();
+            }
+        });
+
+        // Keju Modal
+        function openKejuModal() {
+            document.getElementById('kejuModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeKejuModal() {
+            document.getElementById('kejuModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('kejuModal')?.addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeKejuModal();
+            }
+        });
+
+        // Coklat Modal
+        function openColatModal() {
+            document.getElementById('colatModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeColatModal() {
+            document.getElementById('colatModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('colatModal')?.addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeColatModal();
+            }
+        });
+
+        // Close all modals with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeOriginalModal();
+                closePandanModal();
+                closeKejuModal();
+                closeColatModal();
+            }
+        });
+    </script>
     <footer class="bg-dark-brown px-6 py-6 md:px-14 md:py-8">
         <div
             class="border-2 border-dashed border-white/60 rounded-xl p-6 md:p-8">
@@ -184,10 +526,10 @@
                 <!-- Product Column -->
                 <div class="flex flex-col space-y-2">
                     <h4 class="font-caveat text-white text-3xl mb-4">Product</h4>
-                    <a href="{{ url('/original') }}" class="text-white hover:text-amber-100 text-sm font-medium transition">Sourdough Original</a>
-                    <a href="{{ url('/pandan') }}" class="text-white hover:text-amber-100 text-sm font-medium transition">Sourdough Pandan</a>
-                    <a href="{{ url('/keju') }}" class="text-white hover:text-amber-100 text-sm font-medium transition">Sourdough Cheese</a>
-                    <a href="{{ url('/coklat') }}" class="text-white hover:text-amber-100 text-sm font-medium transition">Sourdough Chocolate</a>
+                    <a href="#breads" class="text-white hover:text-amber-100 text-sm font-medium transition">Sourdough Original</a>
+                    <a href="#breads" class="text-white hover:text-amber-100 text-sm font-medium transition">Sourdough Pandan</a>
+                    <a href="#breads" class="text-white hover:text-amber-100 text-sm font-medium transition">Sourdough Cheese</a>
+                    <a href="#breads" class="text-white hover:text-amber-100 text-sm font-medium transition">Sourdough Chocolate</a>
                 </div>
 
                 <!-- Site Column -->
