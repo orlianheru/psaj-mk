@@ -27,6 +27,7 @@ class ProdukForm
                 ->image()
                 ->disk('public')
                 ->directory('produk')
+                ->max(10240)
                 ->visibility('public')
                 ->nullable(),
             ]);
