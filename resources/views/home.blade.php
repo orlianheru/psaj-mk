@@ -164,358 +164,170 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
 
     @forelse($produks as $product)
-
         @php
             $nama = strtolower($product->nama);
+            $modalId = 'modal-' . $product->id;
+
+            $cardImages = [
+                'sourdough original' => asset('assets/img/original.png'),
+                'sourdough pandan' => asset('assets/img/pandan.png'),
+                'sourdough keju' => asset('assets/img/keju.png'),
+                'sourdough coklat' => asset('assets/img/coklat.png'),
+            ];
+            $cardImg = $product->gambar
+                ? asset('storage/' . $product->gambar)
+                : ($cardImages[$nama] ?? '');
         @endphp
 
-        @if($nama == 'sourdough original')
-            <div
-                class="bg-[#D2B595] rounded-3xl p-6 w-full max-w-[280px] h-[380px] flex flex-col items-center justify-between shadow-lg transform transition hover:-translate-y-2 cursor-pointer"
-                onclick="openOriginalModal()">
+        <div
+            class="bg-[#D2B595] rounded-3xl p-6 w-full max-w-[280px] h-[380px] flex flex-col items-center justify-between shadow-lg transform transition hover:-translate-y-2 cursor-pointer"
+            onclick="openModal('{{ $modalId }}')">
 
-                {{-- Gambar --}}
-                <div class="flex-grow flex items-center justify-center">
-                    @if($product->gambar)
-                        <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama }}"
-                            class="w-56 h-56 object-contain drop-shadow-md" />
-                    @endif
-                </div>
-
-                {{-- Nama --}}
-                <h3 class="font-caveat text-dark-brown text-2xl mt-2 tracking-wide">
-                    {{ $product->nama }}
-                </h3>
-
-                {{-- Harga --}}
-                <p class="text-dark-brown font-semibold">
-                    Rp {{ number_format($product->harga, 0, ',', '.') }}
-                </p>
-
-                {{-- Stok --}}
-                <p class="text-dark-brown text-sm">
-                    Stock = {{ $product->stok }}
-                </p>
-
+            {{-- Gambar --}}
+            <div class="flex-grow flex items-center justify-center">
+                @if($cardImg)
+                    <img src="{{ $cardImg }}" alt="{{ $product->nama }}"
+                        class="w-56 h-56 object-contain drop-shadow-md" />
+                @endif
             </div>
-        @elseif($nama == 'sourdough pandan')
-            <div
-                class="bg-[#D2B595] rounded-3xl p-6 w-full max-w-[280px] h-[380px] flex flex-col items-center justify-between shadow-lg transform transition hover:-translate-y-2 cursor-pointer"
-                onclick="openPandanModal()">
 
-                {{-- Gambar --}}
-                <div class="flex-grow flex items-center justify-center">
-                    @if($product->gambar)
-                        <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama }}"
-                            class="w-56 h-56 object-contain drop-shadow-md" />
-                    @endif
-                </div>
+            {{-- Nama --}}
+            <h3 class="font-caveat text-dark-brown text-2xl mt-2 tracking-wide">
+                {{ $product->nama }}
+            </h3>
 
-                {{-- Nama --}}
-                <h3 class="font-caveat text-dark-brown text-2xl mt-2 tracking-wide">
-                    {{ $product->nama }}
-                </h3>
-
-                {{-- Harga --}}
-                <p class="text-dark-brown font-semibold">
-                    Rp {{ number_format($product->harga, 0, ',', '.') }}
-                </p>
-
-                {{-- Stok --}}
-                <p class="text-dark-brown text-sm">
-                    Stock = {{ $product->stok }}
-                </p>
-
-            </div>
-        @elseif($nama == 'sourdough keju')
-            <div
-                class="bg-[#D2B595] rounded-3xl p-6 w-full max-w-[280px] h-[380px] flex flex-col items-center justify-between shadow-lg transform transition hover:-translate-y-2 cursor-pointer"
-                onclick="openKejuModal()">
-
-                {{-- Gambar --}}
-                <div class="flex-grow flex items-center justify-center">
-                    @if($product->gambar)
-                        <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama }}"
-                            class="w-56 h-56 object-contain drop-shadow-md" />
-                    @endif
-                </div>
-
-                {{-- Nama --}}
-                <h3 class="font-caveat text-dark-brown text-2xl mt-2 tracking-wide">
-                    {{ $product->nama }}
-                </h3>
-
-                {{-- Harga --}}
-                <p class="text-dark-brown font-semibold">
-                    Rp {{ number_format($product->harga, 0, ',', '.') }}
-                </p>
-
-                {{-- Stok --}}
-                <p class="text-dark-brown text-sm">
-                    Stock = {{ $product->stok }}
-                </p>
-
-            </div>
-        @elseif($nama == 'sourdough coklat')
-            <div
-                class="bg-[#D2B595] rounded-3xl p-6 w-full max-w-[280px] h-[380px] flex flex-col items-center justify-between shadow-lg transform transition hover:-translate-y-2 cursor-pointer"
-                onclick="openColatModal()">
-
-                {{-- Gambar --}}
-                <div class="flex-grow flex items-center justify-center">
-                    @if($product->gambar)
-                        <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama }}"
-                            class="w-56 h-56 object-contain drop-shadow-md" />
-                    @endif
-                </div>
-
-                {{-- Nama --}}
-                <h3 class="font-caveat text-dark-brown text-2xl mt-2 tracking-wide">
-                    {{ $product->nama }}
-                </h3>
-
-                {{-- Harga --}}
-                <p class="text-dark-brown font-semibold">
-                    Rp {{ number_format($product->harga, 0, ',', '.') }}
-                </p>
-
-                {{-- Stok --}}
-                <p class="text-dark-brown text-sm">
-                    Stock = {{ $product->stok }}
-                </p>
-
-            </div>
-        @else
-            <div
-                class="bg-[#D2B595] rounded-3xl p-6 w-full max-w-[280px] h-[380px] flex flex-col items-center justify-between shadow-lg transform transition hover:-translate-y-2">
-
-                {{-- Gambar --}}
-                <div class="flex-grow flex items-center justify-center">
-                    @if($product->gambar)
-                        <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama }}"
-                            class="w-56 h-56 object-contain drop-shadow-md" />
-                    @endif
-                </div>
-
-                {{-- Nama --}}
-                <h3 class="font-caveat text-dark-brown text-2xl mt-2 tracking-wide">
-                    {{ $product->nama }}
-                </h3>
-
-                {{-- Harga --}}
-                <p class="text-dark-brown font-semibold">
-                    Rp {{ number_format($product->harga, 0, ',', '.') }}
-                </p>
-
-                {{-- Stok --}}
-                <p class="text-dark-brown text-sm">
-                    Stock = {{ $product->stok }}
-                </p>
-
-            </div>
-        @endif
-
-    @empty
-            <p class="text-white text-center col-span-4">
-                Belum ada produk.
+            {{-- Harga --}}
+            <p class="text-dark-brown font-semibold">
+                Rp {{ number_format($product->harga, 0, ',', '.') }}
             </p>
-        @endforelse
+
+            {{-- Stok --}}
+            <p class="text-dark-brown text-sm">
+                Stock = {{ $product->stok }}
+            </p>
+        </div>
+    @empty
+        <p class="text-white text-center col-span-4">
+            Belum ada produk.
+        </p>
+    @endforelse
 
     </div>
 </section>
 
-    <!-- Modal Sourdough Original -->
-    <div id="originalModal" class="hidden fixed inset-0 modal-backdrop flex items-center justify-center z-50">
-        <div class="modal-content bg-[#B5907A] rounded-3xl w-full max-w-3xl mx-4 relative flex flex-col md:flex-row h-[600px] overflow-hidden">
-            <!-- Close Button -->
-            <button onclick="closeOriginalModal()" class="absolute top-6 right-6 text-white text-3xl font-bold hover:opacity-70 transition z-10">
-                ×
-            </button>
+    {{-- Per-product Modals --}}
+    @foreach($produks as $product)
+        @php
+            $nama = strtolower($product->nama);
+            $modalId = 'modal-' . $product->id;
 
-            <!-- Left Content -->
-            <div class="flex-1 flex flex-col justify-center p-8 md:p-10 text-white">
-                <h2 class="font-serif-title text-4xl md:text-5xl mb-2">Sourdough Original</h2>
-                <p class="text-sm md:text-base font-light mb-6 opacity-90">Cita rasa klasik dengan asam yang khus</p>
+            $modalConfig = [
+                'sourdough original' => [
+                    'subtitle' => 'Cita rasa klasik dengan asam yang khas',
+                    'bg_image' => asset('assets/img/OOO.png'),
+                    'layout' => 'content-left',
+                    'bg_color' => '#B18976',
+                    'text_color' => 'text-white',
+                ],
+                'sourdough pandan' => [
+                    'subtitle' => 'Perpaduan harum pandan dan asam yang lembut',
+                    'bg_image' => asset('assets/img/backpandan.png'),
+                    'layout' => 'image-left',
+                    'bg_color' => '#B5907A',
+                    'text_color' => 'text-white',
+                ],
+                'sourdough keju' => [
+                    'subtitle' => 'Perpaduan gurih dan asam yang seimbang',
+                    'bg_image' => asset('assets/img/backkeju.png'),
+                    'layout' => 'image-left',
+                    'bg_color' => '#EEDBD4',
+                    'text_color' => 'text-amber-900',
+                ],
+                'sourdough coklat' => [
+                    'subtitle' => 'Manis legit dengan sentuhan asam khas sourdough',
+                    'bg_image' => asset('assets/img/CCC.png'),
+                    'layout' => 'content-left',
+                    'bg_color' => '#B18976',
+                    'text_color' => 'text-white',
+                ],
+            ];
 
-                <div class="space-y-4 text-sm md:text-base font-light opacity-90 leading-relaxed mb-8">
-                    <p>Sourdough Original adalah roti yang dibuat dengan fermentasi alami menggunakan starter tanpa ragi instan. Roti ini memiliki rasa asam khas, tekstur berongga dan lembut di dalam, serta kulit luar yang renyah. 🥖</p>
-                </div>
+            $config = $modalConfig[$nama] ?? [
+                'subtitle' => '',
+                'bg_image' => $product->gambar ? asset('storage/' . $product->gambar) : '',
+                'layout' => 'image-left',
+                'bg_color' => '#B5907A',
+                'text_color' => 'text-white',
+            ];
+        @endphp
 
-                <a href="https://wa.me/6285642289659" target="_blank" class="bg-dark-brown text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition shadow-md w-fit">
-                    Order Now
-                </a>
-            </div>
+        <div id="{{ $modalId }}" class="hidden fixed inset-0 modal-backdrop flex items-center justify-center z-50" onclick="if(event.target===this)closeModal('{{ $modalId }}')">
+            <div class="modal-content rounded-3xl w-full max-w-3xl mx-4 relative flex flex-col md:flex-row h-[600px] overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5)]" style="background-color: {{ $config['bg_color'] }}">
+                <!-- Close Button -->
+                <button onclick="closeModal('{{ $modalId }}')" class="absolute top-6 right-6 {{ $config['text_color'] }} text-3xl font-bold hover:opacity-70 transition z-10">
+                    &times;
+                </button>
 
-            <!-- Right Content - Image (Full Height) -->
-            <div class="flex-1 h-full flex items-stretch justify-stretch overflow-hidden">
-                <img src="{{ asset('assets/img/OOO.png') }}" alt="Sourdough Original" class="w-full h-full object-cover">
-            </div>
-        </div>
-    </div>
+                @if($config['layout'] === 'content-left')
+                    <!-- Content Left -->
+                    <div class="flex-1 flex flex-col justify-center p-8 md:p-10 {{ $config['text_color'] }}">
+                        <h2 class="font-serif-title text-4xl md:text-5xl mb-2">{{ $product->nama }}</h2>
+                        <p class="text-sm md:text-base font-light mb-6 opacity-90">{{ $config['subtitle'] }}</p>
 
-    <!-- Modal Sourdough Pandan -->
-    <div id="pandanModal" class="hidden fixed inset-0 modal-backdrop flex items-center justify-center z-50">
-        <div class="modal-content bg-[#B5907A] rounded-3xl w-full max-w-3xl mx-4 relative flex flex-col md:flex-row h-[600px] overflow-hidden">
-            <!-- Close Button -->
-            <button onclick="closePandanModal()" class="absolute top-6 right-6 text-white text-3xl font-bold hover:opacity-70 transition z-10">
-                ×
-            </button>
+                        <div class="space-y-4 text-sm md:text-base font-light opacity-90 leading-relaxed mb-8">
+                            <p>{{ $product->deskripsi ?? '' }}</p>
+                        </div>
 
-            <!-- Left Content - Image (Full Height) -->
-            <div class="flex-1 h-full flex items-stretch justify-stretch overflow-hidden">
-                <img src="{{ asset('assets/img/backpandan.png') }}" alt="Sourdough Pandan" class="w-full h-full object-cover">
-            </div>
+                        <a href="https://wa.me/6285642289659" target="_blank" class="bg-dark-brown text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition shadow-md w-fit">
+                            Order Now
+                        </a>
+                    </div>
 
-            <!-- Right Content -->
-            <div class="flex-1 flex flex-col justify-center p-8 md:p-10 text-white">
-                <h2 class="font-serif-title text-4xl md:text-5xl mb-2">Sourdough Pandan</h2>
-                <p class="text-sm md:text-base font-light mb-6 opacity-90">Perpaduan harum pandan dan asam yang lembut</p>
+                    <!-- Image Right -->
+                    <div class="flex-1 h-full flex items-stretch justify-stretch overflow-hidden">
+                        <img src="{{ $config['bg_image'] }}" alt="{{ $product->nama }}" class="w-full h-full object-cover">
+                    </div>
+                @else
+                    <!-- Image Left -->
+                    <div class="flex-1 h-full flex items-stretch justify-stretch overflow-hidden">
+                        <img src="{{ $config['bg_image'] }}" alt="{{ $product->nama }}" class="w-full h-full object-cover">
+                    </div>
 
-                <div class="space-y-4 text-sm md:text-base font-light opacity-90 leading-relaxed mb-8">
-                    <p>Sourdough Pandan adalah roti sourdough dengan tambahan aroma dan rasa pandan. Dibuat dengan fermentasi alami menggunakan starter. Rasanya asekelik asam dengan sentuhan manis pandan yang lembut, tekstur berongga di dalam, serta kulit luar yang renyah. 🌿🥖</p>
-                </div>
+                    <!-- Content Right -->
+                    <div class="flex-1 flex flex-col justify-center p-8 md:p-10 {{ $config['text_color'] }}">
+                        <h2 class="font-serif-title text-4xl md:text-5xl mb-2">{{ $product->nama }}</h2>
+                        <p class="text-sm md:text-base font-light mb-6 opacity-90">{{ $config['subtitle'] }}</p>
 
-                <a href="https://wa.me/6285642289659" target="_blank" class="bg-dark-brown text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition shadow-md w-fit">
-                    Order Now
-                </a>
-            </div>
-        </div>
-    </div>
+                        <div class="space-y-4 text-sm md:text-base font-light opacity-90 leading-relaxed mb-8">
+                            <p>{{ $product->deskripsi ?? '' }}</p>
+                        </div>
 
-    <!-- Modal Sourdough Keju -->
-    <div id="kejuModal" class="hidden fixed inset-0 modal-backdrop flex items-center justify-center z-50">
-        <div class="modal-content bg-[#B5907A] rounded-3xl w-full max-w-3xl mx-4 relative flex flex-col md:flex-row h-[600px] overflow-hidden">
-            <!-- Close Button -->
-            <button onclick="closeKejuModal()" class="absolute top-6 right-6 text-white text-3xl font-bold hover:opacity-70 transition z-10">
-                ×
-            </button>
-
-            <!-- Left Content - Image (Full Height) -->
-            <div class="flex-1 h-full flex items-stretch justify-stretch overflow-hidden">
-                <img src="{{ asset('assets/img/backkeju.png') }}" alt="Sourdough Keju" class="w-full h-full object-cover">
-            </div>
-
-            <!-- Right Content -->
-            <div class="flex-1 flex flex-col justify-center p-8 md:p-10 text-white">
-                <h2 class="font-serif-title text-4xl md:text-5xl mb-2">Sourdough Cheese</h2>
-                <p class="text-sm md:text-base font-light mb-6 opacity-90">Perpaduan gurih dan asam yang seimbang</p>
-
-                <div class="space-y-4 text-sm md:text-base font-light opacity-90 leading-relaxed mb-8">
-                    <p>Sourdough Cheese adalah roti sourdough yang dibuat dengan fermentasi alami dan ditambahkan dengan keju. Rasanya gurih, creamy, dan sedikit asam nan seimbang dengan rasa asam khus sourdough. Teksturnya berongga di dalam dengan kulit luar yang renyah. 🧀🥖</p>
-                </div>
-
-                <a href="https://wa.me/6285642289659" target="_blank" class="bg-dark-brown text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition shadow-md w-fit">
-                    Order Now
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Sourdough Coklat -->
-    <div id="colatModal" class="hidden fixed inset-0 modal-backdrop flex items-center justify-center z-50">
-        <div class="modal-content bg-[#B5907A] rounded-3xl w-full max-w-3xl mx-4 relative flex flex-col md:flex-row h-[600px] overflow-hidden">
-            <!-- Close Button -->
-            <button onclick="closeColatModal()" class="absolute top-6 right-6 text-white text-3xl font-bold hover:opacity-70 transition z-10">
-                ×
-            </button>
-
-            <!-- Left Content -->
-            <div class="flex-1 flex flex-col justify-center p-8 md:p-10 text-white">
-                <h2 class="font-serif-title text-4xl md:text-5xl mb-2">Sourdough Chocolate</h2>
-                <p class="text-sm md:text-base font-light mb-6 opacity-90">Manis legit dengan sentuhan asam khas sourdough</p>
-
-                <div class="space-y-4 text-sm md:text-base font-light opacity-90 leading-relaxed mb-8">
-                    <p>Sourdough Chocolate adalah roti sourdough dengan tambahan chocolate chips atau potongan cokelat di dalam adenya. Dibuat dengan fermentasi alami, roti ini memiliki rasa asam lembut yang berpadu dengan manis cokelat, tekstur berongga, dan kulit luar yang renyah. 🍫🥖</p>
-                </div>
-
-                <a href="https://wa.me/6285642289659" target="_blank" class="bg-dark-brown text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition shadow-md w-fit">
-                    Order Now
-                </a>
-            </div>
-
-            <!-- Right Content - Image (Full Height) -->
-            <div class="flex-1 h-full flex items-stretch justify-stretch overflow-hidden">
-                <img src="{{ asset('assets/img/CCC.png') }}" alt="Sourdough Chocolate" class="w-full h-full object-cover">
+                        <a href="https://wa.me/6285642289659" target="_blank" class="bg-dark-brown text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition shadow-md w-fit">
+                            Order Now
+                        </a>
+                    </div>
+                @endif
             </div>
         </div>
-    </div>
+    @endforeach
 
     <script>
-        // Original Modal
-        function openOriginalModal() {
-            document.getElementById('originalModal').classList.remove('hidden');
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
 
-        function closeOriginalModal() {
-            document.getElementById('originalModal').classList.add('hidden');
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
             document.body.style.overflow = 'auto';
         }
 
-        document.getElementById('originalModal')?.addEventListener('click', function(event) {
-            if (event.target === this) {
-                closeOriginalModal();
-            }
-        });
-
-        // Pandan Modal
-        function openPandanModal() {
-            document.getElementById('pandanModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closePandanModal() {
-            document.getElementById('pandanModal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
-
-        document.getElementById('pandanModal')?.addEventListener('click', function(event) {
-            if (event.target === this) {
-                closePandanModal();
-            }
-        });
-
-        // Keju Modal
-        function openKejuModal() {
-            document.getElementById('kejuModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeKejuModal() {
-            document.getElementById('kejuModal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
-
-        document.getElementById('kejuModal')?.addEventListener('click', function(event) {
-            if (event.target === this) {
-                closeKejuModal();
-            }
-        });
-
-        // Coklat Modal
-        function openColatModal() {
-            document.getElementById('colatModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeColatModal() {
-            document.getElementById('colatModal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
-
-        document.getElementById('colatModal')?.addEventListener('click', function(event) {
-            if (event.target === this) {
-                closeColatModal();
-            }
-        });
-
-        // Close all modals with Escape key
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
-                closeOriginalModal();
-                closePandanModal();
-                closeKejuModal();
-                closeColatModal();
+                document.querySelectorAll('.modal-backdrop').forEach(function(modal) {
+                    modal.classList.add('hidden');
+                });
+                document.body.style.overflow = 'auto';
             }
         });
     </script>

@@ -11,5 +11,6 @@ class Produk extends Model
         'harga',
         'stok',
         'gambar',
+        'deskripsi',
     ];
 }

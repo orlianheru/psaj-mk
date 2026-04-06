@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Produks\Schemas;
 
 use Filament\Schemas\Schema;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
 
 class ProdukForm
@@ -22,6 +23,10 @@ class ProdukForm
                 TextInput::make('stok')
                     ->numeric()
                     ->default(0),
+
+                Textarea::make('deskripsi')
+                    ->rows(4)
+                    ->nullable(),
 
                 FileUpload::make('gambar')
                 ->image()
